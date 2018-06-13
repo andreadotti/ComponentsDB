@@ -26,7 +26,7 @@ class TestSchema(unittest.TestCase):
         g1 = Group(name='G1', component_type=Group.TYPE)
         q1.parent = g1
         q2.parent = g1
-        self.assertEquals(g1.children['Q3'].prop1,3.1)
+        self.assertEqual(g1.children['Q3'].prop1,3.1)
 
         q3 = Quadrupole(name='Q5', component_type=Quadrupole.TYPE, prop1=5.1)
         g2 = Group(name='G2', component_type=Group.TYPE)
