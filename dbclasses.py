@@ -4,11 +4,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship, backref
+from sqlalchemy.orm.collections import attribute_mapped_collection
 
 # If this is True, use separate tables in the database, otherwise use single 
 # large table
 USE_SEPARATE_TABLES = True
+#Verbose output
+VERBOSE = True
+
+
+
 
 Base = declarative_base()
 
@@ -30,6 +36,21 @@ class Component(Base):
     #This is the trick for sub-classing, it tells based on which field
     #you define sub-classes
     __mapper_args__ = { 'polymorphic_on': component_type }
+    # Allow for groups of components
+    parent_id = Column(Integer, ForeignKey(id))
+    children = relationship(
+        "Component",
+        backref=backref("parent",remote_side=id),
+        collection_class=attribute_mapped_collection('name')
+    )
+
+class Group(Component):
+    '''
+    A group of components
+    This class is needed to allow for a generic component
+    '''
+    TYPE = 'group'
+    __mapper_args__ = { 'polymorphic_identity' : TYPE}
 
 class Quadrupole(Component):
     '''
@@ -118,7 +139,7 @@ class TestSchema(unittest.TestCase):
 
 if __name__ == '__main__':
     print("Using separate tables:",USE_SEPARATE_TABLES)
-    eng, ses = initialize()
+    eng, ses = initialize(VERBOSE)
     TestSchema.SESSION = ses
     unittest.main()
     ses.close_all()
