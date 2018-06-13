@@ -13,7 +13,10 @@ Testing uses `unittest` module, should be already available.
 
 `python testing.py`
 
-Tests are run and if everything is ok no errors is issued
+Tests are run and if everything is ok no errors is issued.
+
+If you want to see how the code is transformed to SQL calls,
+change the `VERBOSITY` flag in `dbclasses.py` file.
 
 Understanding the code
 ----------------------
