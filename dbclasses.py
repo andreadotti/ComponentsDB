@@ -11,7 +11,7 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 # large table
 USE_SEPARATE_TABLES = True
 #Verbose output
-VERBOSE = True
+VERBOSE = False#True
 
 
 
